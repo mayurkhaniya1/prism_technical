@@ -1,0 +1,86 @@
+-- register api 
+POST:http://127.0.0.1:8000/api/register/
+body->row->json
+{
+    "username":"testing",
+    "email": "test@example.com", 
+    "password": "testpass123",
+    "first_name": "Test",
+    "last_name": "User"
+}
+
+-- login api and token access and refresh
+POST:http://127.0.0.1:8000/api/login/
+body->row->json
+{
+    "username": "testuser",
+    "password": "testpass123"
+}
+
+-- create organization api 
+POST:http://127.0.0.1:8000/api/organizations/
+body->row->json
+{
+    "name":"test organization",
+    "description":"this organization is a testing purpose.."
+}
+
+-- get organization api 
+GET:http://127.0.0.1:8000/api/organizations/
+authentication->bearer token: Token
+
+
+-- register memberuser 
+POST:http://127.0.0.1:8000/api/register/
+body->row->json
+{
+    "username": "memberuser1",
+    "email": "member@gmail.com",
+    "password": "memberpass123", 
+    "first_name": "Member",
+    "last_name": "User"
+}
+
+-- membership
+POST:http://127.0.0.1:8000/api/organizations/1/memberships/
+authentication->bearer token: Token
+body->row->json
+{
+    "user_id": 1,
+    "role": "MEMBER"
+}
+
+-- create project 
+POST:http://127.0.0.1:8000/api/organizations/1/projects/
+authentication->bearer token: Token
+body->row->json
+{
+    "name":"project test_1",
+    "description":"this is a testing project in organization.."
+}
+
+
+-- create issues or task 
+POST:http://127.0.0.1:8000/api/organizations/1/projects/1/issues/
+authentication->bearer token: Token
+body->row->json
+{
+    "title": "Test api",
+    "description": "This is a test api",
+    "priority": "LOW",
+    "assignee": 2
+}
+
+-- get or filter data 
+GET:http://127.0.0.1:8000/api/organizations/1/projects/1/issues/?priority=HIGH
+authentication->bearer token: Token
+
+
+-- update priority
+PUT:http://127.0.0.1:8000/api/organizations/1/projects/1/issues/1/
+authentication->bearer token: Token
+body->row->json 
+{
+    "title": "Test api",
+    "status": "IN_PROGRESS"
+}
